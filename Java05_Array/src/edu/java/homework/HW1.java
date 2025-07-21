@@ -95,6 +95,7 @@ public class HW1 {
 			}
 			else {
 				System.out.println("정답입니다.");
+				break;
 			}
 		}
 		
