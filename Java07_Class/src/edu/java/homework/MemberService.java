@@ -11,6 +11,9 @@ public class MemberService {
 		if(isLogin == true) {
 			return true;
 		} else {
+			// id, pw 주소값이 전송됨
+			// id == "test" : 주소값 비교
+			// id.equals("test"): 실제 데이터 비교
 			if(id.equals("test") && pw.equals("1234")) {
 				isLogin = true;
 				return true;
