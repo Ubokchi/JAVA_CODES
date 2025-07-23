@@ -8,6 +8,7 @@ public class ContactMain01 {
 	public static final int MENU_SEARCHALL = 2;
 	public static final int MENU_SEARCHBYINDEX = 3;
 	public static final int MENU_EDIT = 4;
+	public static final int MENU_DELETE = 5;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -16,9 +17,9 @@ public class ContactMain01 {
 		int size = 0;
 		
 		while(choice != MENU_QUIT) {
-			System.out.println("------------------------------------------------");
-			System.out.println("1. 등록 | 2. 전체검색 | 3. 상세검색 | 4. 수정 | 0. 종료");
-			System.out.println("------------------------------------------------");
+			System.out.println("--------------------------------------------------------");
+			System.out.println("1. 등록 | 2. 전체검색 | 3. 상세검색 | 4. 수정 | 5. 삭제 | 0. 종료");
+			System.out.println("--------------------------------------------------------");
 			System.out.println("선택>");
 			choice = sc.nextInt();
 			
@@ -71,6 +72,26 @@ public class ContactMain01 {
 				System.out.println("연락처 수정 완료!");
 				System.out.println(list[edit].toString());
 				break;
+				
+			case MENU_DELETE:
+				System.out.println("삭제할 인덱스 입력>");
+				int delete = sc.nextInt();
+				
+				if (delete < 0 || delete >= size) {
+					System.out.println("잘못된 인덱스입니다.");
+					break;
+				}
+				
+				for (int i = delete; i < size - 1; i++) {
+					list[i] = list[i + 1];
+				}
+				
+				list[size - 1] = null;
+				size--;
+				
+				System.out.println("연락처 삭제 완료!");
+				break;
+				
 			default:
 				System.out.println("0~4 중에 선택하세요.");
 			}
