@@ -56,11 +56,21 @@ public class ContactMain01 {
 				System.out.println("검색할 인덱스 입력>");
 				int search = sc.nextInt();
 				
+				if (search < 0 || search >= size) {
+					System.out.println("잘못된 인덱스입니다.");
+					break;
+				}
+				
 				System.out.println(list[search].toString());
 				break;
 			case MENU_EDIT:
 				System.out.println("수정할 인덱스 입력>");
 				int edit = sc.nextInt();
+				
+				if (edit < 0 || edit >= size) {
+					System.out.println("잘못된 인덱스입니다.");
+					break;
+				}
 				
 				System.out.println("이름 입력>");
 				list[edit].setName(sc.next());
