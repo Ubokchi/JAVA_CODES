@@ -3,6 +3,7 @@ package edu.java.contact02;
 public class ContactDAOImple implements ContactDAO {
 	
 		private static ContactDAOImple instance = null;
+		public static int count = 0;
 		
 		private ContactDAOImple() {}
 		
@@ -15,7 +16,6 @@ public class ContactDAOImple implements ContactDAO {
 		
 		private final int MAX = 100; 
 		private ContactVO[] list = new ContactVO[MAX]; 
-		private int count; 
 		
 		@Override
 		public int insert(ContactVO vo) {

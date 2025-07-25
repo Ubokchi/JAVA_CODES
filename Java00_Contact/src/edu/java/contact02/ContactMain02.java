@@ -69,9 +69,9 @@ public class ContactMain02 {
 
 	private static void selectAll() {
 		ContactVO[] list = dao.selectAll();
-		System.out.println("등록된 연락처 개수: " + list.length);
-		for (int i = 0; list[i] != null; i++) {
-			System.out.println("--- 연락처 " + i + " ---");
+		System.out.println("등록된 연락처 개수: " + ContactDAOImple.count);
+		for (int i = 0; i < ContactDAOImple.count; i++) {
+			System.out.println("--- 연락처 " + (i + 1) + " ---");
 			System.out.println(list[i]);
 		}
 	}
@@ -82,7 +82,7 @@ public class ContactMain02 {
 		int index = sc.nextInt();
 
 		ContactVO vo = dao.select(index);
-		if (index < 0 || vo != null) {
+		if (index >= 0 && index < ContactDAOImple.count) {
 			System.out.println("--- 연락처 " + index + " ---");
 			System.out.println(vo);
 		} else {
@@ -96,23 +96,24 @@ public class ContactMain02 {
 		System.out.println("수정할 인덱스 입력> ");
 		int index = sc.nextInt();
 		
-		if (index < 0 || dao.select(index) == null) {
+		if (index >= 0 && index < ContactDAOImple.count) {
+			System.out.print("이름 입력> ");
+			String name = sc.next();
+			System.out.print("전화번호 입력> ");
+			String phone = sc.next();
+			System.out.print("이메일 입력> ");
+			String email = sc.next();
+
+			ContactVO vo = new ContactVO(name, phone, email);
+			int result = dao.update(index, vo);
+			if (result == 1) {
+				System.out.println("연락처 수정 완료!");
+			}
+		} else {
 			System.out.println("해당 인덱스에 연락처가 없습니다.");
-			return;
 		}
 
-		System.out.print("이름 입력> ");
-		String name = sc.next();
-		System.out.print("전화번호 입력> ");
-		String phone = sc.next();
-		System.out.print("이메일 입력> ");
-		String email = sc.next();
-
-		ContactVO vo = new ContactVO(name, phone, email);
-		int result = dao.update(index, vo);
-		if (result == 1) {
-			System.out.println("연락처 수정 완료!");
-		}
+		
 	}
 
 }
