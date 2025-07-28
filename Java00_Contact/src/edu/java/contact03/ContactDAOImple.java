@@ -53,6 +53,12 @@ public class ContactDAOImple implements ContactDAO{
 		return 1;
 	}
 
+	@Override
+	public int delete(int index) {
+		list.remove(index);
+		return 1;
+	}
+
 }
 
 

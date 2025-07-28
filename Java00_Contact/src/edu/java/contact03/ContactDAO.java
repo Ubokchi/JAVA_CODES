@@ -15,6 +15,9 @@ public interface ContactDAO {
 	// 연락처 정보 인덱스(상세) 수정
 	public abstract int update(int index, ContactVO vo);
 	
+	public abstract int delete(int index);
+	
+	
 }
 
 

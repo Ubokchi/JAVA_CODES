@@ -3,7 +3,7 @@ package edu.java.contact03;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ContactMain02 {
+public class ContactMain03 {
 	private static Scanner sc;
 	private static ContactDAO dao;  
 	public static void main(String[] args) {
@@ -29,6 +29,9 @@ public class ContactMain02 {
 			case Menu.UPDATE:
 				updateContact();
 				break;
+			case Menu.DELETE:
+				deleteContact();
+				break;
 			case Menu.QUIT:
 				run = false;
 				break;
@@ -40,9 +43,9 @@ public class ContactMain02 {
 	}
 
 	private static void showMainMenu() {
-		System.out.println("------------------------------------------------");
-		System.out.println("1. 등록 | 2. 전체검색 | 3. 상세검색 | 4. 수정 | 0. 종료");
-		System.out.println("------------------------------------------------");
+		System.out.println("----------------------------------------------------------");
+		System.out.println("1. 등록 | 2. 전체검색 | 3. 상세검색 | 4. 수정  | 5. 삭제 | 0. 종료");
+		System.out.println("----------------------------------------------------------");
 		System.out.println("선택>");
 	}
 
@@ -58,7 +61,7 @@ public class ContactMain02 {
 		ContactVO vo = new ContactVO(name, phone, email);
 		int result = dao.insert(vo);
 		if(result == 1) {
-			System.out.println("회원 정보 등록 완료");
+			System.out.println("연락처 정보 등록 완료");
 		}
 		
 	}
@@ -106,13 +109,30 @@ public class ContactMain02 {
 			
 			int result = dao.update(index, vo);
 			if(result == 1) {
-				System.out.println("회원 정보 수정 완료");
+				System.out.println("연락처 정보 수정 완료");
 			}
 		} else {
 			System.out.println("인덱스에 연락처가 없습니다.");
 		}
+	}
+	
+	private static void deleteContact() {
+		System.out.println("연락처 정보 수정");
+		System.out.println("인덱스 입력>");
+		int index = sc.nextInt();
 		
+		int size = ((ContactDAOImple)dao).getSize();
 		
+		if (index >= 0 && index < size) {
+			
+			
+			int result = dao.delete(index);
+			if(result == 1) {
+				System.out.println("연락처 정보 삭제 완료");
+			}
+		} else {
+			System.out.println("인덱스에 연락처가 없습니다.");
+		}
 		
 	}
 

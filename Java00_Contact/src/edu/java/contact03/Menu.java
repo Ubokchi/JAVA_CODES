@@ -6,4 +6,5 @@ public interface Menu {
 	int SELECT_ALL = 2;
 	int SELECT_BY_INDEX = 3;
 	int UPDATE = 4;
+	int DELETE = 5;
 }
