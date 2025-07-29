@@ -21,10 +21,9 @@ public class ContactDAOImple implements ContactDAO{
 	
 	private final int MAX = 100; 
 	private ArrayList<ContactVO> list = new ArrayList<ContactVO>(); 
-	private int size;
 
 	public int getSize() {
-		return size = list.size();
+		return list.size();
 	}
 	
 	@Override

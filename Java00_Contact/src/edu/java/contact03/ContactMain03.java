@@ -117,7 +117,7 @@ public class ContactMain03 {
 	}
 	
 	private static void deleteContact() {
-		System.out.println("연락처 정보 수정");
+		System.out.println("연락처 정보 삭제");
 		System.out.println("인덱스 입력>");
 		int index = sc.nextInt();
 		
