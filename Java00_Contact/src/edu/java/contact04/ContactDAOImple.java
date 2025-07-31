@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,9 +47,9 @@ public class ContactDAOImple implements ContactDAO{
 
 	// data 폴더가 있는지 검사하고, 없으면 생성하는 메소드
 	private void initDataDir() {
-		File d = new File(DATA_DIR);
-	    if (!d.exists()) {
-	    	d.mkdirs();
+		dataDir = new File(DATA_DIR);
+	    if (!dataDir.exists()) {
+	    	dataDir.mkdirs();
 	    }
 	} 
 
@@ -63,15 +62,13 @@ public class ContactDAOImple implements ContactDAO{
 	    dataFile = new File(FILE_PATH);
 	    if (!dataFile.exists()) {
 	        try {
-	            if (dataFile.createNewFile()) {
-	                writeDataToFile();
-	            }
+	            dataFile.createNewFile();
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
-	    } else {
-	        readDataFromFile();
 	    }
+
+	    readDataFromFile();
 	}
 
 	// 멤버 변수 list 객체를 data/contact.data 파일에 저장(쓰기)
@@ -86,9 +83,7 @@ public class ContactDAOImple implements ContactDAO{
 			oout = new ObjectOutputStream(bout);
 
 			oout.writeObject(list);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
