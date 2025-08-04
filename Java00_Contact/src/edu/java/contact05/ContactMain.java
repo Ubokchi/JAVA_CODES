@@ -13,9 +13,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import edu.java.contact05.ContactDAO;
-import edu.java.contact05.ContactDAOImple;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
@@ -204,17 +201,24 @@ public class ContactMain {
 		frame.getContentPane().add(btnAllSearch);
 		btnAllSearch.setFont(txtFont);
 		btnAllSearch.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        ArrayList<ContactVO> list = dao.select();
+		        StringBuilder sb = new StringBuilder();
+		        
+		        for (int i = 0; i < list.size(); i++) {
+		            sb.append(list.get(i).toString()).append("\n");
+		        }
+		        txtAreaInfo.setText(sb.toString());
+		        txtAreaLog.append("등록된 연락처 개수: " + list.size() + "\n");
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-                ArrayList<ContactVO> list = dao.select();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < list.size(); i++) {
-                    sb.append(list.get(i).toString()).append("\n");
-                }
-                txtAreaInfo.setText(sb.toString());
-                txtAreaLog.append("등록된 연락처 개수: " + list.size() + "\n");
-            }
+		        tableModel.setRowCount(0);
+		        for (int i = 0; i < list.size(); i++) {
+		            ContactVO vo = list.get(i);
+		            Object[] row = { i, vo.getName(), vo.getPhone(), vo.getEmail() };
+		            tableModel.addRow(row);
+		        }
+		    }
 		});
 
 		// JScrollPane 변수 선언, 인스턴스 생성 및 설정. 3개
@@ -239,7 +243,16 @@ public class ContactMain {
 
 
 		JScrollPane scrollPane3 = new JScrollPane();
+		scrollPane3.setBounds(503, 252, 255, 341);
 		frame.getContentPane().add(scrollPane3);
+		
+		tableModel = new DefaultTableModel(colNames, 0);
+		table = new JTable(tableModel);
+		table.setBounds(503, 252, 266, 341);
+		scrollPane3.setViewportView(table);
+		
+		
+		
 
 	}
 }
