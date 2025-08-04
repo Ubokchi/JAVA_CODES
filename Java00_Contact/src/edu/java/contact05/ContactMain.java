@@ -123,7 +123,7 @@ public class ContactMain {
 				String name = txtName.getText();
 				String phone = txtPhone.getText();
 				String email = txtEmail.getText();
-				if (name == null || phone == null || email == null)  {
+				if (name.equals("") || phone.equals("") || email.equals(""))  {
 					txtAreaLog.append("모든 항목을 입력해주세요.");
 				} else {
 					ContactVO vo = new ContactVO(name, phone, email);
