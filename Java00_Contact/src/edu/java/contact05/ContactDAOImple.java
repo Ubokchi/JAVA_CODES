@@ -173,6 +173,7 @@ public class ContactDAOImple implements ContactDAO {
 
 	@Override
 	public int update(int index, ContactVO vo) {
+		list.get(index).setName(vo.getName());
 		list.get(index).setPhone(vo.getPhone());
 		list.get(index).setEmail(vo.getEmail());
 		writeDataToFile();

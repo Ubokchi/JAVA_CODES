@@ -4,257 +4,326 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import javax.swing.JLabel;
-import javax.swing.JButton;
-
 public class ContactMain {
 
-	private static ContactDAO dao;
-	private JFrame frame; // 메인 프레임
-	// 이름, 전화번호, 이메일, 인덱스를 입력받는 textField
-	private JTextField txtName, txtPhone, txtEmail, txtIndex;
-	// 연락처 정보, 로그 정보를 출력하는 textArea
-	private JTextArea txtAreaInfo, txtAreaLog;
+   private JFrame frame;
+   private JTextField txtName, txtPhone, txtEmail, txtIndex;
+   private JTextArea txtAreaInfo, txtAreaLog;
 
-	/* 스윙 테이블을 사용하기 위한 멤버 변수 선언 */
-	private JTable table;
-	// 테이블 헤더에 들어갈 이름들
-	private String[] colNames = {"No", "이름", "전화번호", "이메일"};
-	// 테이블 데이터를 저장할 배열 객체
-	private Object[] records = new Object[colNames.length];
-	private DefaultTableModel tableModel; // 테이블 형태를 만들 모델 변수
+   private ContactDAO dao;
+   
+   /* 스윙 테이블을 사용하기 위한 멤버 변수 선언 */  
+   private JTable table;
+   private String[] colNames = {"No", "이름", "전화번호", "이메일"}; // 테이블 헤더에 들어갈 이름들
+   private Object[] records = new Object[colNames.length]; // 테이블 데이터를 저장할 배열 객체
+   private DefaultTableModel tableModel; // 테이블 형태를 만들 모델 변수
+   
+   public static void main(String[] args) {
 
+      EventQueue.invokeLater(new Runnable() {
+         public void run() {
+            try {
+               ContactMain window = new ContactMain();
+               window.frame.setVisible(true);
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+         }
+      });
+   }
 
+   /**
+    * Create the application.
+    */
+   public ContactMain() {
+      dao = ContactDAOImple.getInstance();
+      initialize();
+   }
 
-	public static void main(String[] args) {
-		dao = ContactDAOImple.getInstance(); // 다형성. 싱글톤 인스턴스 생성
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ContactMain window = new ContactMain();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+   /**
+    * Initialize the contents of the frame.
+    */
+   private void initialize() {
+      frame = new JFrame();
+      frame.setBounds(100, 100, 786, 662);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.getContentPane().setLayout(null);
 
-	public ContactMain() {
-		initialize();
-	}
+      Font lblFont = new Font("굴림", Font.PLAIN, 44);
+      int lblWidth = 176;
+      int lblHeight = 55;
+      JLabel lblNewLabel = new JLabel("연락처 프로그램 Version 0.5");
+      lblNewLabel.setFont(lblFont);
+      lblNewLabel.setBounds(12, 10, 746, 66);
+      frame.getContentPane().add(lblNewLabel);
 
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 786, 662);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+      JLabel lblName = new JLabel("이름");
+      lblName.setFont(lblFont);
+      lblName.setBounds(12, 86, lblWidth, lblHeight);
+      frame.getContentPane().add(lblName);
 
-		// JLabel 변수 선언, 인스턴스 생성 및 font, bounds 설정. 4개
-		Font txtFont = new Font("굴림", Font.PLAIN, 40);
-		Font txtFontSmall = new Font("굴림", Font.PLAIN, 15);
+      JLabel lblPhone = new JLabel("전화번호");
+      lblPhone.setFont(lblFont);
+      lblPhone.setBounds(12, 151, lblWidth, lblHeight);
+      frame.getContentPane().add(lblPhone);
 
-		JLabel lblNewLabel = new JLabel("연락처 프로그램 Ver 0.5");
-		lblNewLabel.setBounds(12, 12, 480, 33);
-		frame.getContentPane().add(lblNewLabel);
-		lblNewLabel.setFont(txtFont);
+      JLabel lblEmail = new JLabel("이메일");
+      lblEmail.setFont(lblFont);
+      lblEmail.setBounds(12, 216, lblWidth, lblHeight);
+      frame.getContentPane().add(lblEmail);
 
-		JLabel lblName = new JLabel("이름");
-		lblName.setBounds(12, 66, 140, 43);
-		frame.getContentPane().add(lblName);
-		lblName.setFont(txtFont);
+      Font txtFont = new Font("굴림", Font.PLAIN, 34);
+      int txtWidth = 286;
+      int txtHeight = 55;
+      txtName = new JTextField();
+      txtName.setFont(txtFont);
+      txtName.setBounds(200, 86, txtWidth, txtHeight);
+      frame.getContentPane().add(txtName);
+      txtName.setColumns(10);
 
-		JLabel lblPhone = new JLabel("전화번호");
-		lblPhone.setBounds(12, 121, 140, 43);
-		frame.getContentPane().add(lblPhone);
-		lblPhone.setFont(txtFont);
+      txtPhone = new JTextField();
+      txtPhone.setFont(txtFont);
+      txtPhone.setBounds(200, 151, txtWidth, txtHeight);
+      frame.getContentPane().add(txtPhone);
+      txtPhone.setColumns(10);
 
-		JLabel lblEmail = new JLabel("이메일");
-		lblEmail.setBounds(12, 176, 117, 43);
-		frame.getContentPane().add(lblEmail);
-		lblEmail.setFont(txtFont);
+      txtEmail = new JTextField();
+      txtEmail.setFont(txtFont);
+      txtEmail.setBounds(200, 216, txtWidth, txtHeight);
+      frame.getContentPane().add(txtEmail);
+      txtEmail.setColumns(10);
 
-		// JTextField 인스턴스 생성 및 font, bounds 설정. 4개
-		txtName = new JTextField();
-		txtName.setBounds(188, 57, 304, 52);
-		frame.getContentPane().add(txtName);
-		txtName.setColumns(10);
-		txtName.setFont(txtFont);
+      Font btnFont = new Font("굴림", Font.PLAIN, 24);
 
-		txtPhone = new JTextField();
-		txtPhone.setBounds(188, 112, 304, 52);
-		frame.getContentPane().add(txtPhone);
-		txtPhone.setColumns(10);
-		txtPhone.setFont(txtFont);
+      JButton btnInsert = new JButton("등록");
+      btnInsert.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            insertContact();
+         }
+      });
+      btnInsert.setFont(btnFont);
+      btnInsert.setBounds(12, 281, 110, 46);
+      frame.getContentPane().add(btnInsert);
 
-		txtEmail = new JTextField();
-		txtEmail.setBounds(188, 167, 304, 52);
-		frame.getContentPane().add(txtEmail);
-		txtEmail.setColumns(10);
-		txtEmail.setFont(txtFont);
+      JButton btnSearch = new JButton("검색");
+      btnSearch.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            selectContact();
+         }
+      });
 
-		txtIndex = new JTextField();
-		txtIndex.setColumns(10);
-		txtIndex.setBounds(159, 252, 140, 48);
-		frame.getContentPane().add(txtIndex);
-		txtIndex.setFont(txtFont);
+      btnSearch.setFont(btnFont);
+      btnSearch.setBounds(256, 281, 110, 46);
+      frame.getContentPane().add(btnSearch);
 
-		// JButton 변수 선언, 인스턴스 생성 및 font, bounds
-		// addAciontListener 및 메소드 오버라이드 설정. 5개
+      JButton btnUpdate = new JButton("수정");
+      btnUpdate.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            updateContact();
+         }
+      });
 
-		JButton btnInsert = new JButton("등록");
-		btnInsert.setBounds(12, 251, 140, 52);
-		frame.getContentPane().add(btnInsert);
-		btnInsert.setFont(txtFont);
-		btnInsert.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String name = txtName.getText();
-				String phone = txtPhone.getText();
-				String email = txtEmail.getText();
-				if (name.equals("") || phone.equals("") || email.equals(""))  {
-					txtAreaLog.append("모든 항목을 입력해주세요.");
-				} else {
-					ContactVO vo = new ContactVO(name, phone, email);
-					int result = dao.insert(vo);
-					if (result == 1) {
-						txtAreaLog.append("연락처 정보 등록 완료\n");
-					}
-				}
-			}
-		});
+      btnUpdate.setFont(btnFont);
+      btnUpdate.setBounds(12, 337, 110, 46);
+      frame.getContentPane().add(btnUpdate);
 
-		JButton btnSearch = new JButton("검색");
-		btnSearch.setBounds(311, 251, 140, 52);
-		frame.getContentPane().add(btnSearch);
-		btnSearch.setFont(txtFont);
-		btnSearch.addActionListener(new ActionListener() {
+      JButton btnDelete = new JButton("삭제");
+      btnDelete.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            deleteContact();
+         }
+      });
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					int index = Integer.parseInt(txtIndex.getText());
-					ContactVO vo = dao.select(index);
-					if (vo != null) {
-						txtAreaInfo.setText(vo.toString() + "\n");
-					}
-				} catch (Exception ex) {
-					txtAreaInfo.setText("해당 인덱스에 연락처가 없습니다\n");
-				}
-			}
-		});
+      btnDelete.setFont(btnFont);
+      btnDelete.setBounds(134, 337, 110, 46);
+      frame.getContentPane().add(btnDelete);
 
-		JButton btnUpdate = new JButton("수정");
-		btnUpdate.setBounds(159, 308, 140, 55);
-		frame.getContentPane().add(btnUpdate);
-		btnUpdate.setFont(txtFont);
-		btnUpdate.addActionListener(new ActionListener() {
+      JButton btnAllSearch = new JButton("전체검색");
+      btnAllSearch.addActionListener((e) -> {
+         selectAllContact();
+         selectAllContactTable();
+      });
+      btnAllSearch.setFont(btnFont);
+      btnAllSearch.setBounds(256, 337, 190, 46);
+      frame.getContentPane().add(btnAllSearch);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-                    int index = Integer.parseInt(txtIndex.getText());
-                    String name = txtName.getText();
-                    String phone = txtPhone.getText();
-                    String email = txtEmail.getText();
-                    ContactVO vo = new ContactVO(name, phone, email);
-                    int result = dao.update(index, vo);
-                    if (result == 1) {
-                        txtAreaLog.append("연락처 수정 완료\n");
-                    }
-                } catch (Exception ex) {
-                    txtAreaLog.append("해당 인덱스에 연락처가 없습니다\n");
-                }
-			}
-		});
+      txtIndex = new JTextField();
 
-		JButton btnDelete = new JButton("삭제");
-		btnDelete.setBounds(12, 309, 140, 52);
-		frame.getContentPane().add(btnDelete);
-		btnDelete.setFont(txtFont);
-		btnDelete.addActionListener(new ActionListener() {
+      txtIndex.setText("번호입력");
+      txtIndex.setFont(new Font("굴림", Font.PLAIN, 17));
+      txtIndex.setBounds(134, 281, 108, 46);
+      txtIndex.addFocusListener(new FocusAdapter() {
+         @Override
+         public void focusGained(FocusEvent e) {
+            txtIndex.setText("");
+         }
+      });
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-                    int index = Integer.parseInt(txtIndex.getText());
-                    int result = dao.delete(index);
-                    if (result == 1) {
-                        txtAreaLog.append("연락처 삭제 완료\n");
-                    }
-                } catch (Exception ex) {
-                    txtAreaLog.append("해당 인덱스에 연락처가 없습니다\n");
-                }
-			}
-		});
+      frame.getContentPane().add(txtIndex);
+      txtIndex.setColumns(5);
 
-		JButton btnAllSearch = new JButton("전체검색");
-		btnAllSearch.setBounds(311, 307, 181, 52);
-		frame.getContentPane().add(btnAllSearch);
-		btnAllSearch.setFont(txtFont);
-		btnAllSearch.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        ArrayList<ContactVO> list = dao.select();
-		        StringBuilder sb = new StringBuilder();
-		        
-		        for (int i = 0; i < list.size(); i++) {
-		            sb.append(list.get(i).toString()).append("\n");
-		        }
-		        txtAreaInfo.setText(sb.toString());
-		        txtAreaLog.append("등록된 연락처 개수: " + list.size() + "\n");
+      JScrollPane scrollPane1 = new JScrollPane();
+      scrollPane1.setBounds(12, 393, 480, 95);
+      frame.getContentPane().add(scrollPane1);
 
-		        tableModel.setRowCount(0);
-		        for (int i = 0; i < list.size(); i++) {
-		            ContactVO vo = list.get(i);
-		            Object[] row = { i, vo.getName(), vo.getPhone(), vo.getEmail() };
-		            tableModel.addRow(row);
-		        }
-		    }
-		});
+      txtAreaInfo = new JTextArea();
+      txtAreaInfo.setFont(new Font("굴림", Font.PLAIN, 16));
+      scrollPane1.setViewportView(txtAreaInfo);
 
-		// JScrollPane 변수 선언, 인스턴스 생성 및 설정. 3개
-		JScrollPane scrollPane1 = new JScrollPane();
-		scrollPane1.setBounds(12, 393, 480, 95);
-		frame.getContentPane().add(scrollPane1);
+      JScrollPane scrollPane2 = new JScrollPane();
+      scrollPane2.setBounds(12, 498, 480, 95);
+      frame.getContentPane().add(scrollPane2);
 
-		txtAreaInfo = new JTextArea();
-		// TODO: txtAreaInfo font 설정 추가
-		scrollPane1.setViewportView(txtAreaInfo);
-		txtAreaInfo.setFont(txtFontSmall);
+      txtAreaLog = new JTextArea();
+      txtAreaLog.setFont(new Font("굴림", Font.PLAIN, 16));
+      scrollPane2.setViewportView(txtAreaLog);
+      
+      JScrollPane scrollPane3 = new JScrollPane();
+      scrollPane3.setBounds(504, 281, 254, 312);
+      frame.getContentPane().add(scrollPane3);
+      
+      // 테이블 초기화
+      tableModel = new DefaultTableModel(colNames, 0); // 0 = 초기 행 개수
+      table = new JTable(tableModel);
 
-		JScrollPane scrollPane2 = new JScrollPane();
-		scrollPane2.setBounds(12, 498, 480, 95);
-		frame.getContentPane().add(scrollPane2);
+      table.setFont(new Font("굴림", Font.PLAIN, 15));
+      
+      scrollPane3.setViewportView(table);
+      
+   } // end initialize()
+   
+   // contactList 배열에 Contact 인스턴스를 저장
+   private void insertContact() {
+      String name = txtName.getText();
+      String phone = txtPhone.getText();
+      String email = txtEmail.getText();
+      
+      // 하나라도 입력되지 않으면, 메소드 종료
+      if(!validInput(name, phone, email)) {
+         return; 
+      }
+      
+      ContactVO vo = new ContactVO(name, phone, email);
+      
+      int result = dao.insert(vo);
+      int size = ((ContactDAOImple) dao).getSize();
+      if(result == 1) {
+         txtAreaLog.setText("등록된 연락처 개수 : " + size + "\n" + "연락처 등록 완료");
+      }
+      
+   } // end insertContact()
 
-		txtAreaLog = new JTextArea();
-		// TODO : txtAreaLog font 설정 추가
-		scrollPane2.setViewportView(txtAreaLog);
-		
-		txtAreaLog.setFont(txtFontSmall);
+   private void selectAllContact() {
+      ArrayList<ContactVO> list = dao.select();
+      StringBuffer buffer = new StringBuffer();
+      for(ContactVO vo : list) {
+         buffer.append(vo.toString() + "\n");
+//         txtAreaInfo.append(vo.toString());
+      }
+      txtAreaInfo.append(buffer.toString());
+   } // end selectAllContact()
+   
+   private void selectContact() {
+      int index = Integer.parseInt(txtIndex.getText());
+      int size = ((ContactDAOImple) dao).getSize();
+      
+      if(index >= 0 && index < size) {
+         ContactVO vo = dao.select(index);
+         txtAreaInfo.setText(vo.toString());
+      } else {
+         txtAreaLog.setText("해당 인덱스에 연락처가 없습니다.");
+      }
+      
+   } // end selectContact()
+   
+   private void updateContact() {
+      int index = Integer.parseInt(txtIndex.getText());
+      int size = ((ContactDAOImple) dao).getSize();
+      
+      if(index >= 0 && index < size) {
+         String name = txtName.getText();
+         String phone = txtPhone.getText();
+         String email = txtEmail.getText();
+         
+         if(!validInput(name, phone, email)) {
+            return; 
+         }
+         
+         ContactVO vo = new ContactVO(name, phone, email);
+         
+         int result = dao.update(index, vo);
+         if(result == 1) {
+            txtAreaLog.setText("연락처 수정 완료!");
+            selectAllContactTable();
+         }
+         
+      } else {
+         txtAreaLog.setText("해당 인덱스에 연락처가 없습니다.");
+      }
+      
+   } // end updateContact()
 
-
-		JScrollPane scrollPane3 = new JScrollPane();
-		scrollPane3.setBounds(503, 252, 255, 341);
-		frame.getContentPane().add(scrollPane3);
-		
-		tableModel = new DefaultTableModel(colNames, 0);
-		table = new JTable(tableModel);
-		table.setBounds(503, 252, 266, 341);
-		scrollPane3.setViewportView(table);
-		
-		
-		
-
-	}
-}
-
-
+   private void deleteContact() {   
+      int index = Integer.parseInt(txtIndex.getText());
+      int size = ((ContactDAOImple) dao).getSize();
+      
+      if(index >= 0 && index < size) {
+         dao.delete(index);
+         txtAreaLog.setText("연락처 삭제 완료!");
+         selectAllContactTable();
+      } else {
+         txtAreaLog.setText("해당 인덱스에 연락처가 없습니다.");
+      }
+   
+      
+   } // deleteContact()   
+   
+   private void selectAllContactTable() {
+	   tableModel.setRowCount(0);
+	   ArrayList<ContactVO> list = dao.select();
+	   
+	   for(int i = 0; i < list.size(); i++) {
+		   records[0] = i;
+		   records[1] = list.get(i).getName();
+		   records[2] = list.get(i).getPhone();
+		   records[3] = list.get(i).getEmail();
+		   tableModel.addRow(records);
+	   }
+   }
+   
+   private boolean validInput(String name, String phone, String email) {      
+      // name, phone, email 중 하나라도 입력되지 않으면
+      // 경고창 띄우고 기능 실행 안되도록 구현
+      if(name.equals("") || phone.equals("") || email.equals("")) {
+         JOptionPane.showMessageDialog(
+                frame,   // 다이얼로그가 위치할 부모 컴포넌트 (null이면 화면 중앙)
+                "이름 전화번호 이메일을 입력해 주세요.", // 메시지
+                "경고",             // 제목
+                JOptionPane.WARNING_MESSAGE // 메시지 타입
+            );
+         return false;
+      }
+      return true;
+      
+   }
+} // end ContactMain05
