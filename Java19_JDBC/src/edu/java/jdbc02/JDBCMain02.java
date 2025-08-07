@@ -1,20 +1,12 @@
-package edu.java.jdbc01;
+package edu.java.jdbc02;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-// * DB 연결을 위한 환경 설정
-// 1. MYSQL 드라이버 다운로드 및 설정
-// - mysql-connecter-j-8.0.xx.jar 다운로드
-// - 프로젝트 lib 폴더에 추가 -> Build Path jar 파일 추가
-// 2. 테이블 생성
-// 3. DB 연결 코드 작성
-// 4. 자바 코드 수행
-
-public class JDBCMain01 {
-	// 1. DB 연동을 위한 상수
+public class JDBCMain02 {
+	
 	public static final String URL = "jdbc:mysql://localhost:3306/example";
 	public static final String USER = "root";
 	public static final String PASSWORD = "020920";
@@ -24,9 +16,9 @@ public class JDBCMain01 {
 	public static final String COL_NAME = "name";
 	public static final String COL_PHONE = "phone";
 	public static final String COL_EMAIL = "email";
-	
+
 	public static void main(String[] args) {
-		System.out.println("JDBC 1 - insert");
+		System.out.println("JDBC 2 - update");
 		
 		Connection conn = null;
 		Statement stmt = null;
@@ -44,17 +36,20 @@ public class JDBCMain01 {
 			stmt = conn.createStatement();
 			
 			// 5. SQL 문장 생성
-			String sqlInsert =
-					"insert into " + TABLE_NAME + 
-					" (" + COL_NAME + ", " + COL_PHONE + ", " + COL_EMAIL + ") "
-					+ "VALUES ('U', '010-1111-1111', 'test@test.com')";
-			System.out.println(sqlInsert);
+			String sqlUpdate = 
+					"update " + TABLE_NAME + " set " + 
+					COL_NAME + " = '둘리', " + 
+					COL_PHONE + " = '010-2222-2222', " + 
+					COL_EMAIL + " = 'dooli@hoi.com' " + 
+					"where " + COL_CONTACT_ID + " = 1";
+			System.out.println(sqlUpdate);
 			
 			// 6. SQL 실행
-			int result = stmt.executeUpdate(sqlInsert);
+			int result = stmt.executeUpdate(sqlUpdate);
+			// executeUpdate() : INSERT, UPDATE, DELETE 실행
 			
 			// 7. 결과 처리 
-			System.out.println(result + "행이 삽입되었습니다.");
+			System.out.println(result + "행이 수정되었습니다.");
 			
 		} catch (ClassNotFoundException | SQLException e) {
 
@@ -68,7 +63,6 @@ public class JDBCMain01 {
 				e.printStackTrace();
 			}
 		}
-
 	}
-
+	
 }

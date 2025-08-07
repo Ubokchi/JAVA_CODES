@@ -1,0 +1,54 @@
+package edu.java.jdbc03;
+
+public class ContactVO {
+	private int contactId;	// CONTACT_ID : INT
+	private String name;	// NAME : VARCHAR
+	private String phone;	// PHONE : VARCHAR
+	private String email;	// EMAIL : VARCHAR
+
+	public ContactVO() {}
+
+	public ContactVO(int contactId, String name, String phone, String email) {
+		this.contactId = contactId;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+	}
+
+	public int getContactId() {
+		return contactId;
+	}
+
+	public void setContactId(int contactId) {
+		this.contactId = contactId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "ContactVO [contactId=" + contactId + ", name=" + name + ", phone=" + phone + ", email=" + email + "]";
+	}
+}
