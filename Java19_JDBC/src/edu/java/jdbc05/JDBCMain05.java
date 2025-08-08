@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class JDBCMain05 {
 
 	// 1. DB 연동을 위한 상수
-	public static final String URL = "jdbc:mysql://localhost:3306/example";
+	public static final String URL = "jdbc:mysql://localhost:3306";
 	public static final String USER = "root";
 	public static final String PASSWORD = "020920";
 
@@ -38,7 +38,7 @@ public class JDBCMain05 {
 		try {
 			// 2. JDBC 드라이버 로드
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("드라이버 로드 성공");
+	 		System.out.println("드라이버 로드 성공");
 
 			// 3. DB 연결
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
