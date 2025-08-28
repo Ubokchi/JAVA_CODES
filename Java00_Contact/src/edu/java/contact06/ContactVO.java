@@ -1,23 +1,26 @@
 package edu.java.contact06;
 
-import java.io.Serializable;
-
-// VO(Value Object) : MVC 디자인 패턴에서 Model 클래스. 데이터 정보
-// or DTO(Data Transfer Object)
-
-public class ContactVO implements Serializable {
-	// 멤버 변수
-	private String name;
-	private String phone;
-	private String email;
+public class ContactVO {
+	private int contactId; // CONTACT_ID : INT
+	private String name; // NAME : VARCHAR
+	private String phone; // PHONE : VARCHAR
+	private String email; // EMAIL : VARCHAR
 	
-	public ContactVO() {
-	}
+	public ContactVO() {}
 
-	public ContactVO(String name, String phone, String email) {
+	public ContactVO(int contactId, String name, String phone, String email) {
+		this.contactId = contactId;
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
+	}
+
+	public int getContactId() {
+		return contactId;
+	}
+
+	public void setContactId(int contactId) {
+		this.contactId = contactId;
 	}
 
 	public String getName() {
@@ -46,13 +49,7 @@ public class ContactVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Contact [name=" + name + ", phone=" + phone + ", email=" + email + "]";
+		return "ContactVO [contactId=" + contactId + ", name=" + name + ", phone=" + phone + ", email=" + email + "]";
 	}
 
 }
-
-
-
-
-
-
