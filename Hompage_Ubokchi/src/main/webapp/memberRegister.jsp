@@ -8,7 +8,7 @@
 </head>
 <body>
    <h2>회원 가입하기</h2>
-   <form action="${pageContext.request.contextPath}/register.do" method="post">
+   <form action="register.do" method="post">
        <label for="userid">User ID:</label>
        <input type="text" id="userid" name="userid" required><br>
        

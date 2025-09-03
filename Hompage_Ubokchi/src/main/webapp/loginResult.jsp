@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>로그인 성공했습니다.</h2>
-	<form action="<%=request.getContextPath()%>/logout.do" method="post">
+	<form action="logout.do" method="post">
 		<button type="submit">로그아웃</button>
 	</form>
 	<form action="<%=request.getContextPath()%>/memberResult.jsp"

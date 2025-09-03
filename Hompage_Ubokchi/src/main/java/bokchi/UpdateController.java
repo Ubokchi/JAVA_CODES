@@ -31,27 +31,25 @@ public class UpdateController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
-        String userid = (request.getParameter("userid") == null) ? "" : request.getParameter("userid");
-        String password = (request.getParameter("password") == null) ? "" : request.getParameter("password");
-        String email = (request.getParameter("email") == null) ? "" : request.getParameter("email");
-        String emailAgree = (request.getParameter("emailAgree") == null) ? "N" : request.getParameter("emailAgree");
-        String[] interest = request.getParameterValues("interest");
-        String phone = (request.getParameter("phone") == null) ? "" : request.getParameter("phone");
-        String introduce = (request.getParameter("introduce") == null) ? "" : request.getParameter("introduce");
-
-        if (userid.equals("") || password.equals("") || email.equals("")) {
-            response.sendRedirect(request.getContextPath() + "/memberRegister.jsp");
+        String userid = request.getParameter("userid");
+        HttpSession session = request.getSession(false);
+        if ((userid == null || userid.isEmpty()) && session != null) {
+            Object uid = session.getAttribute("userid");
+            if (uid != null) userid = String.valueOf(uid);
+        }
+        if (userid == null || userid.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp?error=loginRequired");
             return;
         }
 
         MemberVO vo = new MemberVO();
         vo.setUserid(userid);
-        vo.setPassword(password);
-        vo.setEmail(email);
-        vo.setEmailAgree(emailAgree);
-        vo.setInterest(interest);
-        vo.setPhone(phone);
-        vo.setIntroduce(introduce);
+        vo.setPassword(request.getParameter("password"));
+        vo.setEmail(request.getParameter("email"));
+        vo.setEmailAgree(request.getParameter("emailAgree"));
+        vo.setInterest(request.getParameterValues("interest"));
+        vo.setPhone(request.getParameter("phone"));
+        vo.setIntroduce(request.getParameter("introduce"));
 
         int result = 0;
         try {
@@ -61,8 +59,6 @@ public class UpdateController extends HttpServlet {
         }
 
         if (result == 1) {
-            HttpSession session = request.getSession();
-            session.setAttribute("loginUser", vo);
             response.sendRedirect(request.getContextPath() + "/memberResult.jsp?updated=1");
         } else {
             response.sendRedirect(request.getContextPath() + "/memberUpdate.jsp?error=updateFail");

@@ -1,53 +1,64 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page
+	import="bokchi.MemberDAO, bokchi.MemberDAOImple, bokchi.MemberVO"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java"%>
 <%
-    bokchi.MemberVO loginUser = (bokchi.MemberVO) session.getAttribute("loginUser");
-    if (loginUser == null) {
-    	out.print("<script>alert('로그인이 필요한 서비스입니다!!');</script>");
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
+	String userid = (String) session.getAttribute("userid");
+	if (userid == null) {
+		response.sendRedirect(request.getContextPath() + "/login.jsp?error=loginRequired");
+		return;
+	}
+	MemberDAO dao = MemberDAOImple.getInstance();
+	MemberVO user = dao.selectByUserid(userid);
+	if (user == null) {
+		response.sendRedirect(request.getContextPath() + "/login.jsp?error=loginRequired");
+		return;
+	}
+	
+	String updated = request.getParameter("updated");
+	String err = request.getParameter("error");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>회원 정보</title>
-    <h2>회원 정보</h2>
+<meta charset="UTF-8">
+<title>회원 정보</title>
+</head>
+<body>
+	<h2>회원 정보</h2>
 
-    <dl>
-      <dt>아이디</dt>
-      <dd><%= loginUser.getUserid() %></dd>
+	<% if (updated != null && updated.equals("1")) { %>
+	<p>회원 정보가 수정되었습니다.</p>
+	<% } %>
+	<% if (err != null && err.equals("deleteFail")) { %>
+	<p>탈퇴 처리에 실패했습니다.</p>
+	<% } else if (err != null && err.equals("updateFail")) { %>
+	<p>수정 처리에 실패했습니다.</p>
+	<% } %>
 
-      <dt>이메일</dt>
-      <dd><%= loginUser.getEmail() == null ? "" : loginUser.getEmail() %></dd>
+	<dl>
+		<dt>아이디</dt>
+		<dd><%= user.getUserid() %></dd>
+		<dt>이메일</dt>
+		<dd><%= user.getEmail() %></dd>
+		<dt>이메일 수신 동의</dt>
+		<dd><%= user.getEmailAgree() == null ? "N" : user.getEmailAgree() %></dd>
+		<dt>관심분야</dt>
+		<dd><%= user.getInterestJoin() %></dd>
+		<dt>전화번호</dt>
+		<dd><%= user.getPhone() == null ? "" : user.getPhone() %></dd>
+		<dt>자기소개</dt>
+		<dd><%= user.getIntroduce() == null ? "" : user.getIntroduce() %></dd>
+	</dl>
 
-      <dt>이메일 수신 동의</dt>
-      <dd><%= loginUser.getEmailAgree() == null ? "" : loginUser.getEmailAgree() %></dd>
-
-      <dt>관심분야</dt>
-      <dd><%= loginUser.getInterestJoin() == null ? "" : loginUser.getInterestJoin() %></dd>
-
-      <dt>전화번호</dt>
-      <dd><%= loginUser.getPhone() == null ? "" : loginUser.getPhone() %></dd>
-
-      <dt>자기소개</dt>
-      <dd><%= loginUser.getIntroduce() == null ? "" : loginUser.getIntroduce() %></dd>
-    </dl>
-
-      <form action="<%= request.getContextPath() %>/memberUpdate.jsp" method="get">
-      <button type="submit" class="btn">회원 정보 수정하기</button>
-    </form>
-
-    <form action="<%= request.getContextPath() %>/delete.do" method="post"
-          onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
-      <input type="hidden" name="userid" value="<%= loginUser.getUserid() %>">
-      <button type="submit" class="btn btn-danger">회원 탈퇴</button>
-      </form>
-      </form>
-      <form action="<%= request.getContextPath() %>/logout.do" method="post">
-      <button type="submit">로그아웃</button>
-    </form>
-    </div>
-  </div>
+	<div class="actions">
+		<form action="<%= request.getContextPath() %>/memberUpdate.jsp"
+			method="get">
+			<button type="submit">회원 정보 수정하기</button>
+		</form>
+		<form action="<%= request.getContextPath() %>/delete.do" method="post"
+			onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+			<button type="submit">회원 탈퇴</button>
+		</form>
+	</div>
 </body>
 </html>

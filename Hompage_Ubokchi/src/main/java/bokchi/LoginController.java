@@ -35,7 +35,7 @@ public class LoginController extends HttpServlet {
 
         if (vo != null && vo.getPassword().equals(password)) {
             HttpSession session = request.getSession();
-            session.setAttribute("loginUser", vo);
+            session.setAttribute("userid", vo.getUserid());
             session.setMaxInactiveInterval(60);
             response.sendRedirect(request.getContextPath() + "/loginResult.jsp");
         } else {

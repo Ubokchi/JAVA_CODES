@@ -35,11 +35,12 @@ public class LoginSessionFilter extends HttpFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         HttpSession session = request.getSession(false);
-
-        if (session == null || session.getAttribute("loginUser") == null) {
+        boolean loggedIn = (session != null && session.getAttribute("userid") != null);
+        if (!loggedIn) {
             response.sendRedirect(request.getContextPath() + "/login.jsp?error=loginRequired");
             return;
         }
+
 
 		chain.doFilter(request, response);
 	}

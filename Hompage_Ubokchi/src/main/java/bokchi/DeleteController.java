@@ -29,26 +29,25 @@ public class DeleteController extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("loginUser") == null) {
-			response.sendRedirect(request.getContextPath() + "/login.jsp?error=loginRequired");
-			return;
+		if (session == null || session.getAttribute("userid") == null) {
+		    response.sendRedirect(request.getContextPath() + "/login.jsp?error=loginRequired");
+		    return;
 		}
-		
-		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		String userid = String.valueOf(session.getAttribute("userid"));
 		
 		int result = 0;
 		
         try {
-            result = dao.delete(loginUser.getUserid());
+            result = dao.delete(userid);
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-		if (result == 1) {
-			session.invalidate();
-			response.sendRedirect(request.getContextPath() + "/login.jsp?deleted=1");
-		} else {
-			response.sendRedirect(request.getContextPath() + "/memberResult.jsp?error=deleteFail");
-		}
+        if (result == 1) {
+            session.invalidate();
+            response.sendRedirect(request.getContextPath() + "/login.jsp?deleted=1");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/memberResult.jsp?error=deleteFail");
+        }
 	}
 }

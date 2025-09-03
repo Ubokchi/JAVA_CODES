@@ -8,11 +8,14 @@
 </head>
 <body>
 	<h1>로그인 페이지</h1>
-	<form action="<%=request.getContextPath()%>/login.do" method="post">
+	<form action="login.do" method="post">
 		아이디<br>
 		<input type="text" name="userid" required><br> 비밀번호<br>
 		<input type="password" name="password" required><br>
 		<button type="submit">로그인</button>
+	</form>
+	<form action="<%= request.getContextPath() %>/memberRegister.jsp" method="get">
+	  	<button type="submit">회원가입하기</button>
 	</form>
 
 	<%
