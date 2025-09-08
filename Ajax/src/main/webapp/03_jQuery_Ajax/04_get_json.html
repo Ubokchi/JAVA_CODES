@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>회원 정보</h2>
+	<p id="info"></p>
+	<script>
+		// $.getJSON(url, data, callback)
+		//	: 요청한 url의 JSON data를 호출
+		// url: 서버의 요청 주소
+		// data: 요청과 함께 보낼 데이터(선택)
+		// callback: JSON 데이터가 리턴됐을 때 처리할 함수
+		$(document).ready(function() {
+			getData();	// 함수 호출
+			function getData() {
+				$.getJSON('../info.do', function(result) {
+					console.log(typeof result);
+					
+					let list = '';
+					for (x in result) {
+						list += result[x].userid + '<br>';
+						list += result[x].password + '<br>';
+						list += result[x].email + '<br>';
+					}
+				});
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 
+	전송된 데이터가
+	만약 'a'로 시작하면 'apple'
+		'b'로 시작하면 'banana'
+		'c'로 시작하면 'coconut'
+	그게 아니면 'not fruits'를 출럭
+--%>
+<%
+	String str = request.getParameter("str");
+	
+	String result;
+	
+	if(str.charAt(0) == 'a') {
+		result = "apple";
+	} else if(str.charAt(0) == 'b') {
+		result = "banana";
+	} else if(str.charAt(0) == 'c') {
+		result = "coconut";
+	} else {
+		result = "not fruits";
+	}
+%>
+
+<%=result %>

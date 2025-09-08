@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js">
+</script>
+<title>Ajax JSON</title>
+</head>
+<body>
+	<p id="output"></p>
+	<script>
+		$(document).ready(function() {
+			$.ajax({
+				type: "get",
+				url: "03_json_test.txt",
+				success: function(result){
+					console.log(result);
+					// 퀴즈
+					// 전송받은 json 데이터를 output 태그에 보여주기
+					// 예시)
+					// 이름: mok
+					// 나이: 20
+					// 펫: dog, 이름: choco
+					// 펫: cat, 이름: navi
+					console.log(result);
+					consolle.log(typeof result);
+					
+					let obj = JSON.parse(result);
+					console.log(typeof obj);
+					let str = "";
+					str += "이름: " + obj.name + "<br>";
+					str += "나이: " + obj.age + "<br>";
+					for(let x in obj.pets) {	
+						str += "펫 : " +	 obj.pets[x].animal + 
+								", 이름: " + obj.pets[x].name + "<br>";
+					}
+				}
+			});		
+		});
+	</script>
+</body>
+</html>
